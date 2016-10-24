@@ -1,44 +1,48 @@
 #include<iostream>
-#include<windows.h>
+#include<windows.h>	//for Sleep function
 #include<conio.h>
-#include<ctime>
+#include<ctime>		//to get system time
 #include<queue>
-#include<stdlib.h>
+#include<stdlib.h>	//for system function
 using namespace std;
-struct point
+
+struct point	//for snake head and tail	
 {
 	int x,y;
-	char dir;
+	char dir;	//current direction of motion
 };
 
 int main()
 {
 	cout<<"THE CLASSIC SNAKE GAME!";
-	cout<<"\nPress any key to begin.";
+	cout<<"\nMake sure CapsLock is OFF!!\nPress any key to begin.";
 	getch();
-	srand(time(NULL));
+	srand(time(NULL));	//seed srand with system time
 	 int p,q;
-	 char a[20][39]={0};
-	 for(int i=0;i<20;i++)
+	 char a[20][39]={0};	//game arnea
+	
+	 for(int i=0;i<20;i++)		//create boundary
 	 {
 	 	a[0][2*i]='#';
 	 	a[19][2*i]='#';
 	 	a[i][0]='#';
 	 	a[i][38]='#';
 	 }
+	
 	 point head={10,5,'d'};
-	 point tail={10,1,'d'};
+	 point tail={10,1,'d'};		//initialize the snake
 	 for(int i=1;i<6;i++)
 	 	a[10][i]='@';
 
 	int score=0;
-	 queue <point> turnpoint;
+	 queue <point> turnpoint;	//keep track of turns made by snake head
 	 char chdir;
-	 bool flag=false,nofood=true;
+	 bool flag=false,nofood=true;	
+	
 	 while(true)
 	 {
 
-	 	system("cls");
+	 	system("cls");		//clear screen
 
 	 	for(int i=0;i<20;i++)
 	 	{
@@ -49,22 +53,24 @@ int main()
 	 		cout<<'\n';
 	 	}
 	 	
-	 	if(kbhit()!=0)
+	 	if(kbhit()!=0)		//if user gives some input
 	 	{
-	 		chdir=getch();
-	 		bool isValid=false;
+	 		chdir=getch();		//new direction of snake
+	 		bool isValid=false;	//to validate input
+			
 	 		if((head.dir=='w' || head.dir=='s') && (chdir=='a' || chdir=='d'))
 	 			isValid=true;
 	 		else if((head.dir=='a' || head.dir=='d') && (chdir=='w' || chdir=='s'))
 	 			isValid=true;
+			
 	 		if(isValid)
 	 		{
-	 			head.dir=chdir;
-	 			turnpoint.push(head);
+	 			head.dir=chdir;		//turn snake head
+	 			turnpoint.push(head);	//store turning point
 	 		}
 	 	}
 
-	 	while(nofood)
+	 	while(nofood)		//randomly generate snake food in arena
 	 	{
 	 		p=rand()%18 +1;
 	 		q=rand()%37 +1;
@@ -74,11 +80,13 @@ int main()
 	 			nofood=false;
 	 		}
 	 	}
-
+		 
+		//move snake in head direction
+		 
 	 	if(head.dir=='d')
 	 	{
 	 		head.y++;
-	 		if(a[head.x][head.y]=='@')
+	 		if(a[head.x][head.y]=='@')	//if snake crosses itself game over!!
 	 			flag=1;
 	 	}
 	 	else if(head.dir=='a')
@@ -108,7 +116,7 @@ int main()
 
 		 	if(tail.x==turnpoint.front().x && tail.y==turnpoint.front().y)
 		 	{
-	 			tail.dir=turnpoint.front().dir;
+	 			tail.dir=turnpoint.front().dir;		//turn the tail in the direction which head turned at this point
 	 			turnpoint.pop();
 	 		}
 	 	
@@ -129,7 +137,7 @@ int main()
 
 	 	a[head.x][head.y]='@';
 
-	 	if(flag==1 || head.x==0 || head.x==19 || head.y==0 || head.y==38)
+	 	if(flag==1 || head.x==0 || head.x==19 || head.y==0 || head.y==38)	//snake crosses boundary or cuts itself
 	 		break;
 	 }
 	 cout<<"GAME OVER!...Your Score is : "<<score;
