@@ -38,9 +38,12 @@ int main()
 	 queue <point> turnpoint;	//keep track of turns made by snake head
 	 char chdir;
 	 bool flag=false,nofood=true;	
+	 int pause=50;
 	
 	 while(true)
 	 {
+
+	 	Sleep(pause);			//wait for some time
 
 	 	system("cls");		//clear screen
 
@@ -133,6 +136,8 @@ int main()
 	 	{
 	 		nofood=true;
 	 		score++;
+	 		if(pause>1)
+	 			pause-=2;		//difficulty increases with your score!!
 	 	}
 
 	 	a[head.x][head.y]='@';
